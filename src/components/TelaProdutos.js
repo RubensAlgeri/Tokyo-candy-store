@@ -2,9 +2,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { useState, useContext, useEffect } from 'react';
 
-import menu from '../assets/menu.svg';
-import logo from '../assets/logo.svg';
-import cart from '../assets/cart.svg';
+import Header from './Header';
 
 export default function TelaProdutos() {
     const [produtos, setProdutos] = useState([]);
@@ -23,11 +21,7 @@ export default function TelaProdutos() {
 
     return (
         <>
-            <Header>    
-                    <img src={menu} alt="menu" />
-                    <img className='logo' src={logo} alt="logo" />
-                    <img src={cart} alt="cart" />
-            </Header>
+            <Header/>
             <Main>
                 <h1>Categories</h1>
                 <div className="categories">
@@ -57,28 +51,6 @@ export default function TelaProdutos() {
 }
 
 // styledComponents
-const Header = styled.div`
-    background-color: white;
-    width: 100%;
-    height: 57px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
-    box-sizing: border-box;
-    position: fixed;
-    top: 0;
-    left: 0;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
-    img {
-        width: 30px;
-        height: 30px;
-    }
-    .logo {
-        width: 150px;
-        height: 30px;
-    }
-`;
 const Main = styled.div`
     box-sizing: border-box;
     padding-top: 80px;
