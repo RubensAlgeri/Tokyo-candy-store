@@ -7,6 +7,7 @@ import Style from "../themes/Style"
 import UserContext from "../contexts/UserContext";
 import TelaCadastro from "./TelaCadastro"
 import TelaLogin from "./TelaLogin"
+import TelaProdutos from "./TelaProdutos"
 
 export default function App(){
 	const [userData, setUserData] = React.useState([])
@@ -19,6 +20,7 @@ export default function App(){
 					<Routes>
 						<Route path="/" element={<TelaLogin />} />
 						<Route path="/cadastro" element={<TelaCadastro />} />
+						<Route path="/produtos" element={<TelaProdutos />} />
 					</Routes>
 				</UserContext.Provider>
 			</BrowserRouter>
