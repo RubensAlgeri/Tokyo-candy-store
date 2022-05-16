@@ -4,7 +4,7 @@ import React from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png"
-import background from "../assets/background.png"
+// import background from "../assets/background.png"
 
 export default function TelaCadastro() {
     const [cadastro, setCadastro] = useState({

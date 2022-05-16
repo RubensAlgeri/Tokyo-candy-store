@@ -1,122 +1,110 @@
-import styled from 'styled-components';
-import { useState, useContext, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-
+import styled from 'styled-components';
+import React from 'react';
+import { useState, useContext, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
+import dotenv from "dotenv";
 import Header from './Header';
-import UserContext from '../contexts/UserContext';
 import deleteButton from '../assets/deleteButton.svg';
 
+
+import UserContext from '../contexts/UserContext';
+dotenv.config()
+
 export default function TelaCarrinho() {
-    const navigate = useNavigate();
-    const [carrinho, setCarrinho] = useState([]);
+
+    const [listaCarrinho, setListaCarrinho] = useState([])
+    const [total, setTotal] = useState([])
     const {userData:{token}} = useContext(UserContext);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        const URL =  `http://localhost:5001/cart`;
         const config = {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         }
+        const promise = axios.get(`https://projeto14-tokyo-candy-store.herokuapp.com/cart`, config)
+        promise.then((resposta) => {
+            setListaCarrinho(resposta.data.cart);
+            setTotal(resposta.data.balance);
+        })
+        promise.catch((err) => { alert(`deu ruim, ${err.message}`) })
+    }, []);
 
-        const promessa = axios.get(URL, config);
-        promessa.then(resposta => {
-            setCarrinho(resposta.data);
-        });
-        promessa.catch(err => {
-            console.log(err);
-        });
-    },[]);
-
-    console.log(carrinho);
+    function removerProduto(idProduto) {
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+        if (window.confirm("Você quer mesmo deletar este Produto?") === true) {
+            const promessa = axios.delete(`https://projeto14-tokyo-candy-store.herokuapp.com/cart/${idProduto}`, config)
+            promessa.then(() => {
+                const promise = axios.get(`https://projeto14-tokyo-candy-store.herokuapp.com/cart`, config)
+                promise.then((resposta) => {
+                    setListaCarrinho(resposta.data.cart);
+                    setTotal(resposta.data.total);
+                })
+                promise.catch((err) => { alert(`deu ruim, ${err.message}`) })
+            })
+        }
+    }
 
     return (
         <>
             <Header/>
-            <Main>
-                {carrinho.length === 0 ? (
-                    <div className='title'>no products found</div>
-                ):(
-                    <>{carrinho.map(produto => { 
-                        let price =  produto.product.price * produto.quantity;
-                        return (
-                            <>
-                                <div className='product'>
-                                    <img className='image' src={produto.product.image} alt="product"/>
-                                    <div className='info'>
-                                        <div className='title'>{produto.product.title} - {produto.quantity}</div>
-                                        <div className='price'>$ {price.toFixed(2)}</div>
-                                    </div>
-                                    <img className='delete' src={deleteButton} alt="deleteButton"/>
-                                </div>  
-                            </>
-                        )
-                    })}</>
-                )}
-                
-                <button>Buy Now</button>
-                <button onClick={()=> navigate('/produtos')}>Back to products</button>
-            </Main>
+            {listaCarrinho.length>0?(listaCarrinho.map(produto => {
+                return (
+                    <Produtos key={produto.title}>
+                        <img src={produto.image} alt="imagem produto" />
+                        <p>{produto.title}</p>
+                        <span>{produto.price}</span>
+                        <ion-icon onClick={()=>removerProduto(produto._id)} name="close-circle"></ion-icon>
+                    </Produtos>
+                )
+            })):<p>Não há nenhum produto em seu carrinho!!</p>}
+            <button onClick={()=>navigate("/checkout")}>R${total} Checkout</button>
+            <button onClick={()=> navigate('/produtos')}>Back to products</button>
         </>
     )
-} 
+}
+const Header = styled.div`
+margin-bottom: 80px;
+`
+const Produtos = styled.div`
+background-color:#ffffff;
+position: relative;
+display: flex;
+flex-wrap: wrap;
+margin: 0 auto 15px;
+width:300px;
+height: 100px;
+box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+border-radius: 5px;
+img{
+    border-radius: 5px;
+    margin-right: 10px;
+    height: 100px;
+    width: auto;
+}
+p{
+    margin-top: 8px;
+    width: 139px;
+    height: auto;
+}
+span{
+    position: absolute;
+    bottom: 14px;
+    left: 112px;
 
-// styled components
-const Main = styled.main`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    box-sizing: border-box;
-    padding-top: 80px;
-    padding-left: 25px;
-    padding-right: 25px;
-    width: 100%;
-    height: 100vh;
-    background-color: #F1E8FF;
-    .product{
-        box-sizing: border-box;
-        width: 100%;
-        height: 100px;
-        border-radius: 5px;
-        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-        background-color: #FFFFFF;
-        display: flex;
-        align-items: center;
-        position: relative;
-        margin-bottom: 15px;
-    }
-    .image{
-        height: 100%;
-        object-fit: cover;
-    }
-    .info{
-        width: 65%;
-        box-sizing: border-box;
-        padding: 10px;
-        font-family: 'Raleway';
-        font-style: normal;
-        font-weight: 500;
-        font-size: 15px;
-        line-height: 18px;
-        color: #000000;
-    }
-    .price{
-        font-size: 18px;
-        line-height: 21px;
-        font-weight: 600;
-    }
-    .delete{
-        width: 30px;
-        height: 30px;
-        position: absolute;
-        right: 10px;
-    }
-    button{
-        width: 203px;
-        height: 40px;
-        border-radius: 10px;
-        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-        margin-top: 20px;
-    }
-`;
+    font-weight: 600;
+}
+ion-icon{
+    position: absolute;
+    top: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    right: 5px;
+}
+`

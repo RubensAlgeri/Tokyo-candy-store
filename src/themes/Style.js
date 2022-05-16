@@ -41,7 +41,7 @@ button{
     border: none;
 }
 ion-icon{
-    color: #ffffff;
+    color: #A564D3;
     font-size: 23px;
 }
 `

@@ -24,6 +24,7 @@ export default function TelaLogin() {
         promessa.then(resposta => {
             setUserData({ name: resposta.data.name, token: resposta.data.token })
             navigate("/produtos")
+
         })
         promessa.catch(err => {
             alert(`deu ruim, ${err.message}`)

@@ -9,6 +9,7 @@ import TelaCadastro from "./TelaCadastro"
 import TelaLogin from "./TelaLogin"
 import TelaProdutos from "./TelaProdutos"
 import TelaProduto from "./TelaProduto"
+
 import TelaCarrinho from "./TelaCarrinho";
 
 export default function App(){
@@ -25,6 +26,7 @@ export default function App(){
 						<Route path="/cadastro" element={<TelaCadastro />} />
 						<Route path="/produtos" element={<TelaProdutos />} />
 						<Route path="/produtos/:id" element={<TelaProduto />} />
+
 						<Route path="/carrinho" element={<TelaCarrinho />} />
 					</Routes>
 				</UserContext.Provider>
