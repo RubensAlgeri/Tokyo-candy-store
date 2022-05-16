@@ -35,22 +35,28 @@ export default function TelaCarrinho() {
         <>
             <Header/>
             <Main>
-                {carrinho.map(produto => {
-                    let price =  produto.product.price * produto.quantity;
-                    return (
-                        <>
-                            <div className='product'>
-                                <img className='image' src={produto.product.image} alt="product"/>
-                                <div className='info'>
-                                    <div className='title'>{produto.product.title} - {produto.quantity}</div>
-                                    <div className='price'>$ {price.toFixed(2)}</div>
-                                </div>
-                                <img className='delete' src={deleteButton} alt="deleteButton"/>
-                            </div>  
-                        </>
-                    )
-                })}
+                {carrinho.length === 0 ? (
+                    <div className='title'>no products found</div>
+                ):(
+                    <>{carrinho.map(produto => { 
+                        let price =  produto.product.price * produto.quantity;
+                        return (
+                            <>
+                                <div className='product'>
+                                    <img className='image' src={produto.product.image} alt="product"/>
+                                    <div className='info'>
+                                        <div className='title'>{produto.product.title} - {produto.quantity}</div>
+                                        <div className='price'>$ {price.toFixed(2)}</div>
+                                    </div>
+                                    <img className='delete' src={deleteButton} alt="deleteButton"/>
+                                </div>  
+                            </>
+                        )
+                    })}</>
+                )}
+                
                 <button>Buy Now</button>
+                <button onClick={()=> navigate('/produtos')}>Back to products</button>
             </Main>
         </>
     )
@@ -111,5 +117,6 @@ const Main = styled.main`
         height: 40px;
         border-radius: 10px;
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+        margin-top: 20px;
     }
 `;

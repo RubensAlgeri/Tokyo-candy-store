@@ -75,7 +75,10 @@ export default function TelaProdutos() {
                     </div>
                     <div className='price'>$ {total.toFixed(2)}</div>
                 </div>
-                <button onClick={adicionar}>Add to Cart</button>
+                <div className='button'>
+                    <button onClick={adicionar}>Add to Cart</button>
+                    <button onClick={()=> navigate('/produtos')}>Back to products</button>
+                </div>
             </Main>
         </>
     )
@@ -139,11 +142,17 @@ const Main = styled.div`
         margin-right: 10px;
         margin-left: 10px;
     }
+    .button{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
     button {
         width: 203px;
         height: 40px;
         border-radius: 10px;
         box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
         background-color : #A564D3;
+        margin-bottom: 10px;
     }
 `;

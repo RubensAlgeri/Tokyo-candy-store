@@ -1,15 +1,17 @@
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import menu from '../assets/menu.svg';
+import logout from '../assets/logout.svg';
 import logo from '../assets/logo.svg';
 import cart from '../assets/cart.svg';
 
 export default function Header() {
+    const navigate = useNavigate();
     return (
         <Div>
-            <img src={menu} alt="menu" />
+            <img src={cart} alt="cart" onClick={()=> navigate('/carrinho')}/>
             <img className='logo' src={logo} alt="logo" />
-            <img src={cart} alt="cart" />
+            <img src={logout} alt="logout" onClick={()=> navigate('/')}/>
         </Div>
     )
 }
@@ -28,6 +30,7 @@ const Div = styled.div`
     top: 0;
     left: 0;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+    z-index: 1;
     img {
         width: 30px;
         height: 30px;
