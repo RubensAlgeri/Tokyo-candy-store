@@ -26,7 +26,7 @@ export default function TelaCarrinho() {
                 Authorization: `Bearer ${token}`
             }
         }
-        const promise = axios.get(`http://localhost:5000/cart/${token}`, config)
+        const promise = axios.get(`http://localhost:5001/cart/${token}`, config)
         promise.then((resposta) => {
             setListaCarrinho(resposta.data);
             setTotal(resposta.data.balance);
@@ -41,9 +41,9 @@ export default function TelaCarrinho() {
             }
         }
         if (window.confirm("Você quer mesmo deletar este Produto?") === true) {
-            const promessa = axios.delete(`http://localhost:5000/cart/${idProduto}`, config)
+            const promessa = axios.delete(`http://localhost:5001/cart/${idProduto}`, config)
             promessa.then(() => {
-                const promise = axios.get(`http://localhost:5000/cart`, config)
+                const promise = axios.get(`http://localhost:5001/cart`, config)
                 promise.then((resposta) => {
                     console.log("cart ", resposta.data.cart)
                     setListaCarrinho(resposta.data);
@@ -53,30 +53,47 @@ export default function TelaCarrinho() {
             })
         }
     }
-
     function checkout(){
         navigate('/checkout',{state:{listaCarrinho}})
     }
 
     return (
-        <>
+        <Main>
             <Header/>
             {listaCarrinho.length>0?(listaCarrinho.map(produto => {
+                   let productPrice = produto.product.price * produto.quantity;
                 return (
                     <Produtos key={produto.product.title}>
                         <img src={produto.product.image} alt="imagem produto" />
-                        <p>{produto.product.title}</p>
-                        <span>{produto.product.price}</span>
+                        <p>{produto.product.title} - {produto.quantity}</p>
+                        <span>{productPrice.toFixed(2)}</span>
                         <ion-icon onClick={()=>removerProduto(produto.product._id)} name="close-circle"></ion-icon>
                     </Produtos>
                 )
             })):<p>Não há nenhum produto em seu carrinho!!</p>}
-            <button onClick={checkout}>R${total} Checkout</button>
-            <button onClick={()=> navigate('/produtos')}>Back to products</button>
-        </>
+            <div className='button'>
+                <button onClick={checkout}>R${total} Checkout</button>
+                <button onClick={()=> navigate('/produtos')}>Back to products</button>
+            </div>
+        </Main>
     )
 }
 
+const Main = styled.div`
+    box-sizing: border-box;
+    padding-top: 80px;
+    .button {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    button {
+        width: 200px;
+        height: 40px;
+        margin-bottom: 15px;
+
+    }
+`
 const Produtos = styled.div`
 background-color:#ffffff;
 position: relative;
