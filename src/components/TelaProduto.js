@@ -18,7 +18,7 @@ export default function TelaProdutos() {
     console.log(token);
 
     useEffect(() => {
-        const URL =  `http://localhost:5000/products/${id}`;
+        const URL =  `http://localhost:5001/products/${id}`;
         const promessa = axios.get(URL);
         promessa.then(resposta => {
             setProduto(resposta.data);
@@ -30,7 +30,7 @@ export default function TelaProdutos() {
     }, []);
 
     async function adicionar() {
-        const URL = `http://localhost:5000/cart/${token}`;
+        const URL = `http://localhost:5001/cart/${token}`;
         const config = {
             headers: {
                 Authorization: `Bearer ${token}`
