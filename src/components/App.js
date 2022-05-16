@@ -26,7 +26,6 @@ export default function App(){
 						<Route path="/cadastro" element={<TelaCadastro />} />
 						<Route path="/produtos" element={<TelaProdutos />} />
 						<Route path="/produtos/:id" element={<TelaProduto />} />
-
 						<Route path="/carrinho" element={<TelaCarrinho />} />
 					</Routes>
 				</UserContext.Provider>

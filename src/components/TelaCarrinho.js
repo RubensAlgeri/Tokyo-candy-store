@@ -18,15 +18,17 @@ export default function TelaCarrinho() {
     const {userData:{token}} = useContext(UserContext);
     const navigate = useNavigate();
 
+    console.log("carrinho ",listaCarrinho)
+    
     useEffect(() => {
         const config = {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         }
-        const promise = axios.get(`https://projeto14-tokyo-candy-store.herokuapp.com/cart`, config)
+        const promise = axios.get(`http://localhost:5000/cart/${token}`, config)
         promise.then((resposta) => {
-            setListaCarrinho(resposta.data.cart);
+            setListaCarrinho(resposta.data);
             setTotal(resposta.data.balance);
         })
         promise.catch((err) => { alert(`deu ruim, ${err.message}`) })
@@ -39,10 +41,11 @@ export default function TelaCarrinho() {
             }
         }
         if (window.confirm("Você quer mesmo deletar este Produto?") === true) {
-            const promessa = axios.delete(`https://projeto14-tokyo-candy-store.herokuapp.com/cart/${idProduto}`, config)
+            const promessa = axios.delete(`http://localhost:5000/cart/${idProduto}`, config)
             promessa.then(() => {
-                const promise = axios.get(`https://projeto14-tokyo-candy-store.herokuapp.com/cart`, config)
+                const promise = axios.get(`http://localhost:5000/cart`, config)
                 promise.then((resposta) => {
+                    console.log("cart ", resposta.data.cart)
                     setListaCarrinho(resposta.data.cart);
                     setTotal(resposta.data.total);
                 })
@@ -56,11 +59,11 @@ export default function TelaCarrinho() {
             <Header/>
             {listaCarrinho.length>0?(listaCarrinho.map(produto => {
                 return (
-                    <Produtos key={produto.title}>
-                        <img src={produto.image} alt="imagem produto" />
-                        <p>{produto.title}</p>
-                        <span>{produto.price}</span>
-                        <ion-icon onClick={()=>removerProduto(produto._id)} name="close-circle"></ion-icon>
+                    <Produtos key={produto.product.title}>
+                        <img src={produto.product.image} alt="imagem produto" />
+                        <p>{produto.product.title}</p>
+                        <span>{produto.product.price}</span>
+                        <ion-icon onClick={()=>removerProduto(produto.product._id)} name="close-circle"></ion-icon>
                     </Produtos>
                 )
             })):<p>Não há nenhum produto em seu carrinho!!</p>}
@@ -69,9 +72,7 @@ export default function TelaCarrinho() {
         </>
     )
 }
-const Header = styled.div`
-margin-bottom: 80px;
-`
+
 const Produtos = styled.div`
 background-color:#ffffff;
 position: relative;

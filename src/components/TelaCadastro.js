@@ -4,7 +4,6 @@ import React from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png"
-// import background from "../assets/background.png"
 
 export default function TelaCadastro() {
     const [cadastro, setCadastro] = useState({
@@ -20,7 +19,7 @@ export default function TelaCadastro() {
     function cadastrar(event) {
         event.preventDefault();
         const promessa = axios.post(
-            "http://localhost:5001/sign-up",
+            "https://projeto14-tokyo-candy-store.herokuapp.com/sign-up",
             { email, password, username: name }
         );
         promessa.then(() => {
@@ -80,7 +79,6 @@ export default function TelaCadastro() {
 
             </form>
             <Link to="/">Já tem uma conta? Faça login!</Link>
-            {/* <img class="background" src={background} alt="background" /> */}
         </Cadastro>
     );
 }
@@ -109,15 +107,4 @@ button {
     width: 303px;
     height: 45px;
 }
-/* .background{
-    margin: 0 auto;
-    position: fixed;
-    width: 375px;
-    height: 166px;
-    left: 19.89px;
-    top: 501px;
-
-    mix-blend-mode: luminosity;
-    rotate:(3.64deg);
-} */
 `;

@@ -12,7 +12,7 @@ export default function TelaProdutos() {
     console.log(categorias);
 
     useEffect(() => {
-        const URL =  'http://localhost:5001/products';
+        const URL =  'http://localhost:5000/products';
         const promessa = axios.get(URL);
         promessa.then(resposta => {
             console.log(resposta.data);

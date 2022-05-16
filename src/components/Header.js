@@ -4,14 +4,21 @@ import styled from 'styled-components';
 import logout from '../assets/logout.svg';
 import logo from '../assets/logo.svg';
 import cart from '../assets/cart.svg';
+import { useState, useContext } from 'react';
+import UserContext from '../contexts/UserContext';
 
 export default function Header() {
     const navigate = useNavigate();
+    const setUserData = useContext(UserContext).setUserData
+    function deslogar(){
+        setUserData([])
+        navigate('/')
+    }
     return (
         <Div>
             <img src={cart} alt="cart" onClick={()=> navigate('/carrinho')}/>
             <img className='logo' src={logo} alt="logo" />
-            <img src={logout} alt="logout" onClick={()=> navigate('/')}/>
+            <img src={logout} alt="logout" onClick={deslogar}/>
         </Div>
     )
 }
