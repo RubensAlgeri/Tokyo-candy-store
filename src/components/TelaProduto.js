@@ -1,26 +1,55 @@
 import styled from 'styled-components';
+import { useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 import add from '../assets/add.svg';
 import remove from '../assets/remove.svg';
 
 import Header from "./Header";
 
 export default function TelaProdutos() {
+    const {id} = useParams();
+    console.log(id);
+    const [produto, setProduto] = useState("");
+    const [quantidade, setQuantidade] = useState(1);
+
+    useEffect(() => {
+        const URL =  `http://localhost:5001/products/${id}`;
+        const promessa = axios.get(URL);
+        promessa.then(resposta => {
+            setProduto(resposta.data);
+            console.log(resposta.data);
+        });
+        promessa.catch(err => {
+            console.log(err);
+        });
+    }, []);
+
+    const {title, price, image, description} = produto;
+    const total = price * quantidade;
+
     return (
         <>
             <Header/>
             <Main>
                 <div className='image'>
-                    <img src='https://www.japancandystore.com/media/catalog/product/cache/11/image/563x/040ec09b1e35df139433887a97daa66f/2/0/20220124_091.jpg' alt="product"/>
+                    <img src={image} alt="product"/>
                 </div>
-                <div className='info'>Ace Milk Strawberry Pudding Treats</div>
-                <div className='description'>This pack of yummy pudding treats is perfect for snacktime with your friends! It has milk and strawberry flavors for you to enjoy!</div>
+                <div className='info'>{title}</div>
+                <div className='description'>{description}</div>
                 <div className='container'>
                     <div className='quantity'>
-                        <img src={add} alt="add"/>
-                        <p>1</p>
-                        <img src={remove} alt="remove"/>
+                        <img src={remove} alt="remove" onClick={() => {
+                            if (quantidade > 1) {
+                                setQuantidade(quantidade - 1);
+                            }
+                        }} />
+                        <p>{quantidade}</p>
+                        <img src={add} alt="add" onClick={() => {
+                            setQuantidade(quantidade + 1);
+                        }} />
                     </div>
-                    <div className='price'>$12.90</div>
+                    <div className='price'>$ {total.toFixed(2)}</div>
                 </div>
                 <button>Add to Cart</button>
             </Main>
@@ -40,12 +69,14 @@ const Main = styled.div`
     text-align: center;
     .image{
         background-color: white;
-        width: 300x;
+        width: 300px;
         height: 300px;
         border-radius: 5px;
         border: 1px solid #A564D3;
         box-sizing: border-box;
         padding: 5px;
+        margin-left: auto;
+        margin-right: auto;
     }
     img {
         width: 100%;

@@ -1,10 +1,12 @@
 import styled from 'styled-components';
 import axios from 'axios';
-import { useState, useContext, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 
 import Header from './Header';
 
 export default function TelaProdutos() {
+    const navigate = useNavigate();
     const [produtos, setProdutos] = useState([]);
 
     useEffect(() => {
@@ -31,9 +33,9 @@ export default function TelaProdutos() {
                     <div className="category">Chocolates</div>
                 </div>
                 <div className="products">
-                    {produtos.map(({title, price, image}) => {
+                    {produtos.map(({title, price, image, _id}) => {
                         return (
-                            <div className="product">
+                            <div className="product" onClick={() => navigate(`/produtos/${_id}`)}>
                                 <img src={image} alt="product" />
                                 <div className="product-info">
                                     {title}

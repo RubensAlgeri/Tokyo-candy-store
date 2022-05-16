@@ -12,17 +12,18 @@ import TelaProduto from "./TelaProduto"
 
 export default function App(){
 	const [userData, setUserData] = React.useState([])
+
     return(
         <>
 		<Reset />
         <Style />
 			<BrowserRouter>
-				<UserContext.Provider value={{ userData, setUserData}}>
+				<UserContext.Provider value={{ userData, setUserData }}>
 					<Routes>
 						<Route path="/" element={<TelaLogin />} />
 						<Route path="/cadastro" element={<TelaCadastro />} />
 						<Route path="/produtos" element={<TelaProdutos />} />
-						<Route path="/produto" element={<TelaProduto />} />
+						<Route path="/produtos/:id" element={<TelaProduto />} />
 					</Routes>
 				</UserContext.Provider>
 			</BrowserRouter>
