@@ -11,6 +11,7 @@ import TelaProdutos from "./TelaProdutos"
 import TelaProduto from "./TelaProduto"
 
 import TelaCarrinho from "./TelaCarrinho";
+import TelaCheckout from "./TelaCheckout";
 
 export default function App(){
 	const [userData, setUserData] = React.useState([])
@@ -27,6 +28,7 @@ export default function App(){
 						<Route path="/produtos" element={<TelaProdutos />} />
 						<Route path="/produtos/:id" element={<TelaProduto />} />
 						<Route path="/carrinho" element={<TelaCarrinho />} />
+						<Route path="/checkout" element={<TelaCheckout />} />
 					</Routes>
 				</UserContext.Provider>
 			</BrowserRouter>

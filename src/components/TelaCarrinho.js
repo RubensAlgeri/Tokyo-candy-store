@@ -19,7 +19,7 @@ export default function TelaCarrinho() {
     const navigate = useNavigate();
 
     console.log("carrinho ",listaCarrinho)
-    
+
     useEffect(() => {
         const config = {
             headers: {
@@ -46,12 +46,16 @@ export default function TelaCarrinho() {
                 const promise = axios.get(`http://localhost:5000/cart`, config)
                 promise.then((resposta) => {
                     console.log("cart ", resposta.data.cart)
-                    setListaCarrinho(resposta.data.cart);
+                    setListaCarrinho(resposta.data);
                     setTotal(resposta.data.total);
                 })
                 promise.catch((err) => { alert(`deu ruim, ${err.message}`) })
             })
         }
+    }
+
+    function checkout(){
+        navigate('/checkout',{state:{listaCarrinho}})
     }
 
     return (
@@ -67,7 +71,7 @@ export default function TelaCarrinho() {
                     </Produtos>
                 )
             })):<p>Não há nenhum produto em seu carrinho!!</p>}
-            <button onClick={()=>navigate("/checkout")}>R${total} Checkout</button>
+            <button onClick={checkout}>R${total} Checkout</button>
             <button onClick={()=> navigate('/produtos')}>Back to products</button>
         </>
     )

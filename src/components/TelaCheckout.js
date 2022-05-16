@@ -2,7 +2,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 import React from 'react';
 import { useState, useContext, useEffect } from 'react';
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import dotenv from "dotenv";
 import Header from "./Header"
 import { cpfMask } from "./MascaraCPF"
@@ -15,6 +15,7 @@ export default function TelaCheckout() {
     const [CPF, setCPF] = useState([])
     const { userData, setUserData } = useContext(UserContext)
     const { token } = userData;
+    const { listaCarrinho } = useLocation().state;
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -23,16 +24,40 @@ export default function TelaCheckout() {
                 Authorization: `Bearer ${token}`
             }
         }
-        const promise = axios.post(`https://projeto14-tokyo-candy-store.herokuapp.com/checkout`, {}, config)
+        const promise = axios.post(`http://localhost:5000/checkout`, {}, config)
         promise.then((resposta) => {
             alert("Obrigado pela compra, volte sempre!!!")
         })
         promise.catch((err) => { alert(`deu ruim, ${err.message}`) })
     }, []);
+
+    function enviar(e){
+        e.preventDefault()
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+        const promessa = axios.post(
+            "http://localhost:5000/checkout",
+            { CPF, listaCarrinho}, config
+        );
+        promessa.then(() => {
+            alert("Sua compra foi concluída")
+            navigate("/produtos");
+        });
+        promessa.catch((err) => {
+            alert(`deu ruim, ${err.message}`);
+        });
+    }
+    function cancelar() {
+        navigate("/carrinho")
+    }
+    
     return (
         <>
             <Header />
-            <form onSubmit={cadastrar}>
+            <form onSubmit={enviar }>
 
                 <input
                     type="text"
@@ -47,6 +72,3 @@ export default function TelaCheckout() {
         </>
     )
 }
-const Header = styled.div`
-margin-bottom: 80px;
-`
