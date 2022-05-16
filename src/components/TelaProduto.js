@@ -1,17 +1,21 @@
 import styled from 'styled-components';
-import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
+import UserContext from '../contexts/UserContext';
+
 import add from '../assets/add.svg';
 import remove from '../assets/remove.svg';
-
 import Header from "./Header";
 
 export default function TelaProdutos() {
+    const navigate = useNavigate();
     const {id} = useParams();
     console.log(id);
     const [produto, setProduto] = useState("");
     const [quantidade, setQuantidade] = useState(1);
+    const {userData:{token}} = useContext(UserContext);
+    console.log(token);
 
     useEffect(() => {
         const URL =  `http://localhost:5001/products/${id}`;
@@ -24,6 +28,26 @@ export default function TelaProdutos() {
             console.log(err);
         });
     }, []);
+
+    async function adicionar() {
+        const URL = `http://localhost:5001/cart`;
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+
+        try {
+            const resposta = await axios.post(URL, {
+                product: produto,
+                quantity: quantidade
+            }, config);
+            console.log(resposta);
+            navigate("/carrinho");
+        } catch (err) {
+            console.log(err);
+        }
+    }
 
     const {title, price, image, description} = produto;
     const total = price * quantidade;
@@ -51,7 +75,7 @@ export default function TelaProdutos() {
                     </div>
                     <div className='price'>$ {total.toFixed(2)}</div>
                 </div>
-                <button>Add to Cart</button>
+                <button onClick={adicionar}>Add to Cart</button>
             </Main>
         </>
     )

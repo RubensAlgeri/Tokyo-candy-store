@@ -20,10 +20,10 @@ export default function TelaLogin() {
 
     function logar(event) {
         event.preventDefault();
-        const promessa = axios.post("https://projeto14-tokyo-candy-store.herokuapp.com/sign-in", { email, password })
+        const promessa = axios.post("http://localhost:5001/sign-in", { email, password })
         promessa.then(resposta => {
             setUserData({ name: resposta.data.name, token: resposta.data.token })
-            navigate("/")
+            navigate("/produtos")
         })
         promessa.catch(err => {
             alert(`deu ruim, ${err.message}`)
