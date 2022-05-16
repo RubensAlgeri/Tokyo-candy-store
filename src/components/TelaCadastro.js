@@ -20,7 +20,7 @@ export default function TelaCadastro() {
     function cadastrar(event) {
         event.preventDefault();
         const promessa = axios.post(
-            "https://projeto14-tokyo-candy-store.herokuapp.com/sign-up",
+            "http://localhost:5001/sign-up",
             { email, password, username: name }
         );
         promessa.then(() => {

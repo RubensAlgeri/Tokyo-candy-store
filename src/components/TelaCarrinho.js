@@ -4,6 +4,9 @@ import React from 'react';
 import { useState, useContext, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import dotenv from "dotenv";
+import Header from './Header';
+import deleteButton from '../assets/deleteButton.svg';
+
 
 import UserContext from '../contexts/UserContext';
 dotenv.config()
@@ -12,8 +15,7 @@ export default function TelaCarrinho() {
 
     const [listaCarrinho, setListaCarrinho] = useState([])
     const [total, setTotal] = useState([])
-    const { userData } = useContext(UserContext)
-    const { token } = userData;
+    const {userData:{token}} = useContext(UserContext);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -63,6 +65,7 @@ export default function TelaCarrinho() {
                 )
             })):<p>Não há nenhum produto em seu carrinho!!</p>}
             <button onClick={()=>navigate("/checkout")}>R${total} Checkout</button>
+            <button onClick={()=> navigate('/produtos')}>Back to products</button>
         </>
     )
 }
