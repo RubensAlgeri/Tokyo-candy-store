@@ -15,10 +15,10 @@ export default function TelaCarrinho() {
 
     const [listaCarrinho, setListaCarrinho] = useState([])
     const [total, setTotal] = useState([])
-    const {userData:{token}} = useContext(UserContext);
+    const { userData: { token } } = useContext(UserContext);
     const navigate = useNavigate();
 
-    console.log("carrinho ",listaCarrinho)
+    console.log("carrinho ", listaCarrinho)
 
     useEffect(() => {
         const config = {
@@ -26,7 +26,7 @@ export default function TelaCarrinho() {
                 Authorization: `Bearer ${token}`
             }
         }
-        const promise = axios.get(`http://localhost:5001/cart/${token}`, config)
+        const promise = axios.get(`https://projeto14-tokyo-candy-store.herokuapp.com/cart/${token}`, config)
         promise.then((resposta) => {
             setListaCarrinho(resposta.data);
             setTotal(resposta.data.balance);
@@ -41,9 +41,9 @@ export default function TelaCarrinho() {
             }
         }
         if (window.confirm("Você quer mesmo deletar este Produto?") === true) {
-            const promessa = axios.delete(`http://localhost:5001/cart/${idProduto}`, config)
+            const promessa = axios.delete(`https://projeto14-tokyo-candy-store.herokuapp.com/cart/${idProduto}`, config)
             promessa.then(() => {
-                const promise = axios.get(`http://localhost:5001/cart`, config)
+                const promise = axios.get(`https://projeto14-tokyo-candy-store.herokuapp.com/cart`, config)
                 promise.then((resposta) => {
                     console.log("cart ", resposta.data.cart)
                     setListaCarrinho(resposta.data);
@@ -53,27 +53,27 @@ export default function TelaCarrinho() {
             })
         }
     }
-    function checkout(){
-        navigate('/checkout',{state:{listaCarrinho}})
+    function checkout() {
+        navigate('/checkout', { state: { listaCarrinho } })
     }
 
     return (
         <Main>
-            <Header/>
-            {listaCarrinho.length>0?(listaCarrinho.map(produto => {
-                   let productPrice = produto.product.price * produto.quantity;
+            <Header />
+            {listaCarrinho.length > 0 ? (listaCarrinho.map(produto => {
+                let productPrice = produto.product.price * produto.quantity;
                 return (
                     <Produtos key={produto.product.title}>
                         <img src={produto.product.image} alt="imagem produto" />
                         <p>{produto.product.title} - {produto.quantity}</p>
                         <span>{productPrice.toFixed(2)}</span>
-                        <ion-icon onClick={()=>removerProduto(produto.product._id)} name="close-circle"></ion-icon>
+                        <ion-icon onClick={() => removerProduto(produto.product._id)} name="close-circle"></ion-icon>
                     </Produtos>
                 )
-            })):<p>Não há nenhum produto em seu carrinho!!</p>}
+            })) : <p>Não há nenhum produto em seu carrinho!!</p>}
             <div className='button'>
-                <button onClick={checkout}>R${total} Checkout</button>
-                <button onClick={()=> navigate('/produtos')}>Back to products</button>
+                <button onClick={checkout}>Checkout</button>
+                <button onClick={() => navigate('/produtos')}>Back to products</button>
             </div>
         </Main>
     )

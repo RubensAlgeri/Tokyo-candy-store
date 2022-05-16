@@ -12,7 +12,7 @@ export default function TelaProdutos() {
     console.log(categorias);
 
     useEffect(() => {
-        const URL =  'http://localhost:5000/products';
+        const URL = 'https://projeto14-tokyo-candy-store.herokuapp.com/products';
         const promessa = axios.get(URL);
         promessa.then(resposta => {
             console.log(resposta.data);
@@ -25,32 +25,32 @@ export default function TelaProdutos() {
 
     return (
         <>
-            <Header/>
+            <Header />
             <Main>
                 <h1>Categories</h1>
                 <div className="categories">
-                    <div className="category" onClick={()=>{
+                    <div className="category" onClick={() => {
                         if (categorias === "1") {
                             setCategorias("0");
                         } else {
                             setCategorias("1");
                         }
                     }}>Candy</div>
-                    <div className="category" onClick={()=>{
+                    <div className="category" onClick={() => {
                         if (categorias === "2") {
                             setCategorias("0");
                         } else {
                             setCategorias("2");
                         }
                     }}>Snacks</div>
-                    <div className="category" onClick={()=>{
+                    <div className="category" onClick={() => {
                         if (categorias === "3") {
                             setCategorias("0");
                         } else {
                             setCategorias("3");
                         }
                     }}>Cookies</div>
-                    <div className="category" onClick={()=>{
+                    <div className="category" onClick={() => {
                         if (categorias === "4") {
                             setCategorias("0");
                         } else {
@@ -59,8 +59,8 @@ export default function TelaProdutos() {
                     }}>Chocolates</div>
                 </div>
                 <div className="products">
-                    {produtos.map(({title, price, image, _id, type}) => {
-                        if(categorias === type || categorias === "0") {         
+                    {produtos.map(({ title, price, image, _id, type }) => {
+                        if (categorias === type || categorias === "0") {
                             return (
                                 <div className="product" onClick={() => navigate(`/produtos/${_id}`)}>
                                     <img src={image} alt="product" />
@@ -72,7 +72,7 @@ export default function TelaProdutos() {
                                     </div>
                                 </div>
                             )
-                        }  
+                        }
                     })}
                 </div>
             </Main>

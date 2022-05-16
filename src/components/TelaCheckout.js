@@ -24,14 +24,14 @@ export default function TelaCheckout() {
                 Authorization: `Bearer ${token}`
             }
         }
-        const promise = axios.post(`http://localhost:5000/checkout`, {}, config)
+        const promise = axios.post(`https://projeto14-tokyo-candy-store.herokuapp.com/checkout`, {}, config)
         promise.then((resposta) => {
             alert("Obrigado pela compra, volte sempre!!!")
         })
         promise.catch((err) => { alert(`deu ruim, ${err.message}`) })
     }, []);
 
-    function enviar(e){
+    function enviar(e) {
         e.preventDefault()
         const config = {
             headers: {
@@ -39,8 +39,8 @@ export default function TelaCheckout() {
             }
         }
         const promessa = axios.post(
-            "http://localhost:5000/checkout",
-            { CPF, listaCarrinho}, config
+            "https://projeto14-tokyo-candy-store.herokuapp.com/checkout",
+            { CPF, listaCarrinho }, config
         );
         promessa.then(() => {
             alert("Sua compra foi concluída")
@@ -53,11 +53,11 @@ export default function TelaCheckout() {
     function cancelar() {
         navigate("/carrinho")
     }
-    
+
     return (
         <>
             <Header />
-            <form onSubmit={enviar }>
+            <form onSubmit={enviar}>
 
                 <input
                     type="text"

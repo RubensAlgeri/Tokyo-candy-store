@@ -10,15 +10,15 @@ import Header from "./Header";
 
 export default function TelaProdutos() {
     const navigate = useNavigate();
-    const {id} = useParams();
+    const { id } = useParams();
     console.log(id);
     const [produto, setProduto] = useState("");
     const [quantidade, setQuantidade] = useState(1);
-    const {userData:{token}} = useContext(UserContext);
+    const { userData: { token } } = useContext(UserContext);
     console.log(token);
 
     useEffect(() => {
-        const URL =  `http://localhost:5000/products/${id}`;
+        const URL = `https://projeto14-tokyo-candy-store.herokuapp.com/products/${id}`;
         const promessa = axios.get(URL);
         promessa.then(resposta => {
             setProduto(resposta.data);
@@ -30,7 +30,7 @@ export default function TelaProdutos() {
     }, []);
 
     async function adicionar() {
-        const URL = `http://localhost:5000/cart/${token}`;
+        const URL = `https://projeto14-tokyo-candy-store.herokuapp.com/cart/${token}`;
         const config = {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -49,15 +49,15 @@ export default function TelaProdutos() {
         }
     }
 
-    const {title, price, image, description} = produto;
+    const { title, price, image, description } = produto;
     const total = price * quantidade;
 
     return (
         <>
-            <Header/>
+            <Header />
             <Main>
                 <div className='image'>
-                    <img src={image} alt="product"/>
+                    <img src={image} alt="product" />
                 </div>
                 <div className='info'>{title}</div>
                 <div className='description'>{description}</div>
@@ -77,7 +77,7 @@ export default function TelaProdutos() {
                 </div>
                 <div className='button'>
                     <button onClick={adicionar}>Add to Cart</button>
-                    <button onClick={()=> navigate('/produtos')}>Back to products</button>
+                    <button onClick={() => navigate('/produtos')}>Back to products</button>
                 </div>
             </Main>
         </>
